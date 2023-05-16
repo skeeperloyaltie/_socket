@@ -1,26 +1,27 @@
 import socket
 
-def main():
-    # Create a socket
-    s_cc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# Create a server socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Bind the socket to a port
-    s_cc.bind(("localhost", 1234))
+# Bind the server socket to port 8080
+server_socket.bind(("127.0.0.1", 1345))
 
-    # Listen for incoming connections
-    s_cc.listen(1)
+# Listen for connections
+server_socket.listen()
 
-    # Accept an incoming con
-    con, address = s_cc.accept()
+while True:
+    # Accept a connection from a client
+    client_socket, client_address = server_socket.accept()
 
-    # Receive a msg from the client
-    msg = con.recv(1024)
+    # Get the client's message
+    message = client_socket.recv(1024).decode()
+    print('Connection received.')
 
-    # Send a reply back to the client
-    con.sendall("Hello, world!".encode())
+    # Convert the message to a bytes object
+    message = message.encode("utf-8")
 
-    # Close the con
-    con.close()
+    # Send a message back to the client
+    client_socket.sendall(message)
 
-if __name__ == "__main__":
-    main()
+    # Close the client socket
+    client_socket.close()

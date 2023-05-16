@@ -1,23 +1,19 @@
 import socket
 
-def main():
-    # Create a socket
-    s_ck = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# Create a client socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Connect to the server
-    s_ck.connect(("localhost", 1234))
+# Connect to the server
+client_socket.connect(("127.0.0.1", 1345))
 
-    # Send a msg to the server
-    s_ck.sendall("Hello, world!".encode())
+# Send a message to the server
+client_socket.sendall("Hello, server!".encode())
 
-    # Receive a reply from the server
-    msg = s_ck.recv(1024)
+# Receive a message from the server
+message = client_socket.recv(1024).decode()
 
-    # Print the reply
-    print(msg.decode())
+# Print the message
+print(message)
 
-    # Close the connection
-    s_ck.close()
-
-if __name__ == "__main__":
-    main()
+# Close the client socket
+client_socket.close()
